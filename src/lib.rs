@@ -11,6 +11,7 @@
 //! one can derive all softly derived children public key.
 
 #![cfg_attr(feature = "with-bench", feature(test))]
+#![cfg_attr(not(test), no_std)]
 
 #[cfg(test)]
 #[cfg(feature = "with-bench")]

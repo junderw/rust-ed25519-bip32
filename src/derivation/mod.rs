@@ -1,15 +1,15 @@
 mod common;
 pub mod v2;
 
-use cryptoxide::curve25519::{Ge, Scalar};
-use cryptoxide::hmac::Hmac;
-use cryptoxide::mac::Mac;
-use cryptoxide::sha2::Sha512;
-use std::{
+use core::{
     convert::{TryFrom, TryInto},
     error::Error,
     fmt,
 };
+use cryptoxide::curve25519::{Ge, Scalar};
+use cryptoxide::hmac::Hmac;
+use cryptoxide::mac::Mac;
+use cryptoxide::sha2::Sha512;
 
 use super::key::{mk_public_key, mk_xprv, mk_xpub, XPrv, XPub, XPRV_SIZE, XPUB_SIZE};
 pub use common::{DerivationIndex, DerivationScheme, DerivationType};
@@ -53,8 +53,8 @@ pub fn private(xprv: &XPrv, index: DerivationIndex, scheme: DerivationScheme) ->
     let kr: &[u8; 32] = &ekey[32..64].try_into().unwrap();
     let chaincode = &xprv.as_ref()[64..96];
 
-    let mut zmac = Hmac::new(Sha512::new(), &chaincode);
-    let mut imac = Hmac::new(Sha512::new(), &chaincode);
+    let mut zmac = Hmac::new(Sha512::new(), chaincode);
+    let mut imac = Hmac::new(Sha512::new(), chaincode);
     let seri = serialize_index(index, scheme);
     match DerivationType::from_index(index) {
         DerivationType::Soft(_) => {
@@ -138,8 +138,8 @@ pub fn public(
     let pk = <&[u8; 32]>::try_from(&xpub.as_ref()[0..32]).unwrap();
     let chaincode = &xpub.as_ref()[32..64];
 
-    let mut zmac = Hmac::new(Sha512::new(), &chaincode);
-    let mut imac = Hmac::new(Sha512::new(), &chaincode);
+    let mut zmac = Hmac::new(Sha512::new(), chaincode);
+    let mut imac = Hmac::new(Sha512::new(), chaincode);
     let seri = serialize_index(index, scheme);
     match DerivationType::from_index(index) {
         DerivationType::Soft(_) => {

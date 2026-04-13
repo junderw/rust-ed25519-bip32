@@ -1,7 +1,7 @@
 use super::hex;
-use std::error::Error;
-use std::fmt;
-use std::marker::PhantomData;
+use core::error::Error;
+use core::fmt;
+use core::marker::PhantomData;
 
 use cryptoxide::constant_time::CtEqual;
 
@@ -24,7 +24,7 @@ pub struct Signature<T: ?Sized> {
 impl<T> Signature<T> {
     pub fn from_bytes(bytes: [u8; SIGNATURE_SIZE]) -> Self {
         Signature {
-            bytes: bytes,
+            bytes,
             _phantom: PhantomData,
         }
     }
@@ -42,7 +42,7 @@ impl<T> Signature<T> {
         Signature::<R>::from_bytes(self.bytes)
     }
 
-    pub fn to_bytes<'a>(&'a self) -> &'a [u8; SIGNATURE_SIZE] {
+    pub fn to_bytes(&self) -> &[u8; SIGNATURE_SIZE] {
         &self.bytes
     }
 }

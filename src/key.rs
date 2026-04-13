@@ -1,13 +1,13 @@
-use std::fmt;
+use core::fmt;
 
 use cryptoxide::constant_time::CtEqual;
 use cryptoxide::ed25519;
 use cryptoxide::ed25519::signature_extended;
 use cryptoxide::hashing::sha2::Sha512;
 
-use std::convert::{TryFrom, TryInto};
-use std::error::Error;
-use std::hash::{Hash, Hasher};
+use core::convert::{TryFrom, TryInto};
+use core::error::Error;
+use core::hash::{Hash, Hasher};
 
 use super::derivation::{self, DerivationError, DerivationIndex, DerivationScheme};
 use super::hex;
@@ -96,6 +96,7 @@ impl XPrv {
     /// bip32-ed25519 paper:
     ///
     /// > "2) We admit only those ~k such that the third highest bit of the last byte of kL is zero."
+    #[allow(clippy::result_unit_err)]
     pub fn from_nonextended_noforce(
         bytes: &[u8; 32],
         chain_code: &[u8; CHAIN_CODE_SIZE],
